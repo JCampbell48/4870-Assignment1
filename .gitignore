@@ -1,0 +1,30 @@
+# Sensitive or environment-specific files
+appsettings.Development.json
+
+# Build artifacts
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.csproj.user
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.code-workspace
+
+# Dependency folders and files
+packages/
+*.nupkg
+project.lock.json
+global.json
+
+# System files
+Thumbs.db
+.DS_Store
+
+# Backup files
+*.bak
+*.swp
