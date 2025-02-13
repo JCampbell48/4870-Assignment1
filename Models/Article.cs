@@ -20,4 +20,10 @@ namespace BlogApp.Models;
         public DateTime EndDate { get; set; }
         [Required]
         public string ContributorUsername { get; set; }
+
+        // Automatically sets the creation date when an article is created
+        [Required]
+        public DateTime CreateDate { get; set; } = DateTime.UtcNow;
+
+
     }
