@@ -48,10 +48,10 @@ public static class SeedData {
     public static List<Article> GetArticles() {
         return new List<Article>() {
             new Article() {    
-                ArticleId = 1, // ✅ Changed to int
+                ArticleId = 1, // Changed to int
                 Title = "New Advances in AI",
                 Body = "Artificial intelligence is evolving rapidly with new breakthroughs in deep learning...",
-                CreateDate = new DateTime(2024, 2, 10),  // ✅ Hardcoded static date
+                CreateDate = new DateTime(2024, 2, 10),  // Hardcoded static date due to DateTime.UtcNow dynamic issue
                 StartDate = new DateTime(2024, 2, 5),
                 EndDate = new DateTime(2024, 3, 10),
                 ContributorUsername = "c@c.c"
