@@ -11,6 +11,13 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
+// Add session support
+builder.Services.AddDistributedMemoryCache(); // Use in-memory cache for session storage
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Session timeout
+});
+
 
 var app = builder.Build(); // services above this line ^^^^^^^
 
@@ -18,12 +25,14 @@ var app = builder.Build(); // services above this line ^^^^^^^
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseSession();
+
 
 app.UseAuthorization();
 
