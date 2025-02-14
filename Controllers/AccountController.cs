@@ -25,14 +25,14 @@ public class AccountController : Controller
         var user = _dbContext.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
         if (user != null)
         {
-            // Check if the user is approved
+            // Checks if the user is approved
             if (!user.IsApproved)
             {
                 ViewBag.Error = "Your account has not been approved by the admin.";
                 return View();
             }
 
-            // Store user info in session
+            // Stores user info in session
             HttpContext.Session.SetString("Username", user.Username);
             HttpContext.Session.SetString("Role", user.Role);
 

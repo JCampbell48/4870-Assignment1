@@ -1,12 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
-namespace BlogApp.Controllers
+namespace BlogApp.Controllers;
+
+public class ContributorController : Controller
 {
-    public class ContributorController
+    [HttpGet]
+    public IActionResult ContributorDashboard()
     {
-        
+        if (HttpContext.Session.GetString("Role") != "Contributor")
+        {
+            return Unauthorized(); // Redirect to login page
+        }
+
+        return View();
     }
 }
