@@ -17,6 +17,6 @@ namespace BlogApp.Models;
         public string LastName { get; set; }
         [Required]
         public string Role { get; set; }
-                [Required]
+        
         public bool IsApproved { get; set; } = false;
     }

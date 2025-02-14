@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250213021533_M1")]
+    [Migration("20250214073931_M1")]
     partial class M1
     {
         /// <inheritdoc />
@@ -113,6 +113,9 @@ namespace BlogApp.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -134,6 +137,7 @@ namespace BlogApp.Data.Migrations
                         {
                             Username = "a@a.a",
                             FirstName = "John",
+                            IsApproved = false,
                             LastName = "Smith",
                             Password = "P@$$w0rd",
                             Role = "Admin"
@@ -142,6 +146,7 @@ namespace BlogApp.Data.Migrations
                         {
                             Username = "c@c.c",
                             FirstName = "Alice",
+                            IsApproved = false,
                             LastName = "Johnson",
                             Password = "P@$$w0rd",
                             Role = "Contributor"
@@ -150,6 +155,7 @@ namespace BlogApp.Data.Migrations
                         {
                             Username = "b@b.b",
                             FirstName = "Michael",
+                            IsApproved = true,
                             LastName = "Brown",
                             Password = "P@$$w0rd",
                             Role = "Contributor"
@@ -158,6 +164,7 @@ namespace BlogApp.Data.Migrations
                         {
                             Username = "d@d.d",
                             FirstName = "Emily",
+                            IsApproved = false,
                             LastName = "Davis",
                             Password = "P@$$w0rd",
                             Role = "Admin"

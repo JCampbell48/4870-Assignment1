@@ -39,7 +39,8 @@ namespace BlogApp.Data.Migrations
                     Password = table.Column<string>(type: "TEXT", nullable: false),
                     FirstName = table.Column<string>(type: "TEXT", nullable: false),
                     LastName = table.Column<string>(type: "TEXT", nullable: false),
-                    Role = table.Column<string>(type: "TEXT", nullable: false)
+                    Role = table.Column<string>(type: "TEXT", nullable: false),
+                    IsApproved = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,13 +61,13 @@ namespace BlogApp.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Username", "FirstName", "LastName", "Password", "Role" },
+                columns: new[] { "Username", "FirstName", "IsApproved", "LastName", "Password", "Role" },
                 values: new object[,]
                 {
-                    { "a@a.a", "John", "Smith", "P@$$w0rd", "Admin" },
-                    { "b@b.b", "Michael", "Brown", "P@$$w0rd", "Contributor" },
-                    { "c@c.c", "Alice", "Johnson", "P@$$w0rd", "Contributor" },
-                    { "d@d.d", "Emily", "Davis", "P@$$w0rd", "Admin" }
+                    { "a@a.a", "John", false, "Smith", "P@$$w0rd", "Admin" },
+                    { "b@b.b", "Michael", true, "Brown", "P@$$w0rd", "Contributor" },
+                    { "c@c.c", "Alice", false, "Johnson", "P@$$w0rd", "Contributor" },
+                    { "d@d.d", "Emily", false, "Davis", "P@$$w0rd", "Admin" }
                 });
         }
 

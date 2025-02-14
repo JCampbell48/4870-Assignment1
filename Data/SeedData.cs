@@ -27,6 +27,7 @@ public static class SeedData {
                 FirstName = "Alice",
                 LastName = "Johnson",
                 Role = "Contributor",
+                IsApproved = false,
             },
             new User() {    
                 Username = "b@b.b",
@@ -34,6 +35,7 @@ public static class SeedData {
                 FirstName = "Michael",
                 LastName = "Brown",
                 Role = "Contributor",
+                IsApproved = true,
             },
             new User() {    
                 Username = "d@d.d",

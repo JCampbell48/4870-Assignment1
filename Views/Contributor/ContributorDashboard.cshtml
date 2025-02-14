@@ -1,0 +1,33 @@
+@model IEnumerable<BlogApp.Models.Article>
+
+<h2>Your Articles</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var article in Model)
+    {
+        <tr>
+            <td>@article.Title</td>
+            <td>@article.StartDate.ToShortDateString()</td>
+            <td>@article.EndDate.ToShortDateString()</td>
+            <td>
+                <a href="/Contributor/EditArticle/@article.ArticleId">Edit</a> |
+                <form asp-action="DeleteArticle" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@article.ArticleId" />
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a href="/Contributor/CreateArticle">Create New Article</a>
