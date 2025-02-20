@@ -505,6 +505,110 @@ body {
     font-style: italic;
 }
 
+/* All Articles Container */
+.all-articles-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.all-articles-container h2 {
+  font-size: 2rem;
+  color: #2b6cb0;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Article Table */
+.article-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.article-table th {
+  background-color: #f7fafc;
+  font-weight: 600;
+  text-align: left;
+  padding: 1rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.article-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+.article-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Article Title and Preview */
+.article-title {
+  font-weight: 600;
+  color: #2b6cb0;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.article-body-preview {
+  font-size: 0.875rem;
+  color: #4a5568;
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+.read-more {
+  color: #2b6cb0;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+
+.read-more:hover {
+  text-decoration: underline;
+}
+
+/* Date Columns */
+.article-date {
+  font-size: 0.875rem;
+  color: #718096;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .article-table {
+      font-size: 0.875rem;
+  }
+
+  .article-table th,
+  .article-table td {
+      padding: 0.75rem 0.5rem;
+  }
+
+  .article-table th:nth-child(2),
+  .article-table th:nth-child(3),
+  .article-table td:nth-child(2),
+  .article-table td:nth-child(3) {
+      display: none;
+  }
+
+  .article-title {
+      font-size: 1rem;
+  }
+
+  .article-body-preview {
+      font-size: 0.8125rem;
+  }
+}
+
 /* Responsive styles */
 @media (max-width: 768px) {
     .pending-users-table,

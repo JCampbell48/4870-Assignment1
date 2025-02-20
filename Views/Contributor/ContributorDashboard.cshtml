@@ -8,6 +8,7 @@
             <th>Title</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <th>Created On</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -24,6 +25,7 @@
             </td>
             <td class="article-date">@article.StartDate.ToShortDateString()</td>
             <td class="article-date">@article.EndDate.ToShortDateString()</td>
+            <td class="article-date">@article.CreateDate.ToString("MMMM dd, yyyy HH:mm")</td> <!-- Display CreateDate -->
             <td class="actions-cell">
                 <a href="/Contributor/EditArticle/@article.ArticleId" class="edit-link">Edit</a> 
                 <form asp-action="DeleteArticle" method="post" style="display:inline;">

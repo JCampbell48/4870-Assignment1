@@ -1,12 +1,33 @@
-﻿@{
-    var role = Context.Session.GetString("Role");
-}
+﻿@model IEnumerable<BlogApp.Models.Article>
 
-@if (!string.IsNullOrEmpty(role))
-{
-    <p>Logged in as: @role</p>
-}
-else
-{
-    <p>User not logged in.</p>
-}
+<div class="all-articles-container">
+    <h2>All Articles</h2>
+
+    <table class="article-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Created On</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var article in Model)
+            {
+                <tr>
+                    <td>
+                        <span class="article-title">@article.Title</span>
+                        <div class="article-body-preview">
+                            @Html.Raw(article.Body.Substring(0, Math.Min(100, article.Body.Length)))
+                            <a href="@Url.Action("Article", "Home", new { id = article.ArticleId })" class="read-more">More...</a>
+                        </div>
+                    </td>
+                    <td class="article-date">@article.StartDate.ToShortDateString()</td>
+                    <td class="article-date">@article.EndDate.ToShortDateString()</td>
+                    <td class="article-date">@article.CreateDate.ToString("MMMM dd, yyyy HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

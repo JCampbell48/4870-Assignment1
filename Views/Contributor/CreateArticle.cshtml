@@ -25,5 +25,13 @@
             value="@(Model?.EndDate != null ? Model.EndDate.ToString("yyyy-MM-dd") : "")" required />
     </div>
 
+    @if (Model?.CreateDate != DateTime.MinValue)
+    {
+        <div class="create-form-group">
+            <label>Created On:</label>
+            <span>@Model.CreateDate.ToString("MMMM dd, yyyy HH:mm")</span>
+        </div>
+    }
+
     <button type="submit" class="create-submit-btn">Create</button>
 </form>

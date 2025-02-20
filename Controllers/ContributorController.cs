@@ -2,13 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BlogApp.Data;
 using BlogApp.Models;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
 
 namespace BlogApp.Controllers
 {
-    [Authorize(Roles = "Contributor")]
+    [Authorize(Roles = "Contributor,Admin")]
     public class ContributorController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
@@ -34,32 +31,32 @@ namespace BlogApp.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult CreateArticle(Article article)
-        {
-            var userRole = HttpContext.Session.GetString("Role");
-            var username = HttpContext.Session.GetString("Username");
+[HttpPost]
+public IActionResult CreateArticle(Article article)
+{
+    var username = User.Identity.Name;
 
-            if (string.IsNullOrEmpty(userRole) || userRole != "Contributor" || string.IsNullOrEmpty(username))
-            {
-                _logger.LogWarning("Unauthorized access attempt. Role: {Role}, Username: {Username}", userRole, username);
-                return Unauthorized(); // Return 401 if session data is missing or incorrect
-            }
+    if (!User.IsInRole("Contributor") && !User.IsInRole("Admin"))
+    {
+        _logger.LogWarning("Unauthorized access attempt by user: {Username}", username);
+        return Unauthorized(); // 401 Unauthorized
+    }
 
-            if (ModelState.IsValid)
-            {
-                article.ContributorUsername = username;
-                var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-                article.CreateDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneInfo);
+    if (ModelState.IsValid)
+    {
+        article.ContributorUsername = username;
+        var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+        article.CreateDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneInfo);
 
-                _dbContext.Articles.Add(article);
-                _dbContext.SaveChanges();
+        _dbContext.Articles.Add(article);
+        _dbContext.SaveChanges();
 
-                return RedirectToAction("ContributorDashboard");
-            }
+        return RedirectToAction("ContributorDashboard");
+    }
 
-            return View(article);
-        }
+    return View(article);
+}
+
 
         [HttpGet]
         public IActionResult EditArticle(int id)
