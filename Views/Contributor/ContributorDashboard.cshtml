@@ -1,8 +1,8 @@
 @model IEnumerable<BlogApp.Models.Article>
 
-<h2>Your Articles</h2>
+<h2 id="contributorDashboardTitle">Your Articles</h2>
 
-<table>
+<table id="contributorArticleTable" class="article-table">
     <thead>
         <tr>
             <th>Title</th>
@@ -15,14 +15,20 @@
     @foreach (var article in Model)
     {
         <tr>
-            <td>@article.Title</td>
-            <td>@article.StartDate.ToShortDateString()</td>
-            <td>@article.EndDate.ToShortDateString()</td>
             <td>
-                <a href="/Contributor/EditArticle/@article.ArticleId">Edit</a> |
+                <span class="article-title">@article.Title</span>
+                <div class="article-body-preview">
+                    @Html.Raw(article.Body.Substring(0, Math.Min(100, article.Body.Length)))
+                    <a href="@Url.Action("Article", "Home", new { id = article.ArticleId })" class="read-more">More...</a>
+                </div>
+            </td>
+            <td class="article-date">@article.StartDate.ToShortDateString()</td>
+            <td class="article-date">@article.EndDate.ToShortDateString()</td>
+            <td class="actions-cell">
+                <a href="/Contributor/EditArticle/@article.ArticleId" class="edit-link">Edit</a> 
                 <form asp-action="DeleteArticle" method="post" style="display:inline;">
                     <input type="hidden" name="id" value="@article.ArticleId" />
-                    <button type="submit">Delete</button>
+                    <button type="submit" class="delete-button">Delete</button>
                 </form>
             </td>
         </tr>
@@ -30,4 +36,4 @@
     </tbody>
 </table>
 
-<a href="/Contributor/CreateArticle">Create New Article</a>
+<a id="createNewArticleBtn" class="create-article-btn" href="/Contributor/CreateArticle">Create New Article</a>

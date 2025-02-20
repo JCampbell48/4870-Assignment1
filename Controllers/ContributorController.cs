@@ -1,129 +1,117 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BlogApp.Data;
 using BlogApp.Models;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
 
-namespace BlogApp.Controllers;
-
-public class ContributorController : Controller
+namespace BlogApp.Controllers
 {
-    private readonly ApplicationDbContext _dbContext;
-
-    public ContributorController(ApplicationDbContext dbContext)
+    [Authorize(Roles = "Contributor")]
+    public class ContributorController : Controller
     {
-        _dbContext = dbContext;
-    }
+        private readonly ApplicationDbContext _dbContext;
+        private readonly ILogger<ContributorController> _logger;
 
-    [HttpGet]
-    public IActionResult ContributorDashboard()
-    {
-        if (HttpContext.Session.GetString("Role") != "Contributor")
+        // Ensure logger is injected
+        public ContributorController(ApplicationDbContext dbContext, ILogger<ContributorController> logger)
         {
-            return Unauthorized(); // Redirect to login page or show error
+            _dbContext = dbContext;
+            _logger = logger;
         }
 
-        // Fetch articles created by the logged-in contributor
-        var username = HttpContext.Session.GetString("Username");
-        var articles = _dbContext.Articles.Where(a => a.ContributorUsername == username).ToList();
-
-        return View(articles); // Pass articles to the view
-    }
-
-    [HttpGet]
-    public IActionResult CreateArticle()
-    {
-        if (HttpContext.Session.GetString("Role") != "Contributor")
+        [HttpGet]
+        public IActionResult ContributorDashboard()
         {
-            return Unauthorized();
+            var username = User.Identity.Name; // Get logged-in username
+            var articles = _dbContext.Articles.Where(a => a.ContributorUsername == username).ToList();
+            return View(articles);
         }
 
-        return View();
-    }
-
-    [HttpPost]
-    public IActionResult CreateArticle(Article article)
-    {
-        if (HttpContext.Session.GetString("Role") != "Contributor")
+        [HttpGet]
+        public IActionResult CreateArticle()
         {
-            return Unauthorized();
+            return View();
         }
 
-        if (ModelState.IsValid)
+        [HttpPost]
+        public IActionResult CreateArticle(Article article)
         {
-            article.ContributorUsername = HttpContext.Session.GetString("Username");
-            article.CreateDate = DateTime.UtcNow;
+            // Debug: Check session values
+            var userRole = HttpContext.Session.GetString("Role");
+            var username = HttpContext.Session.GetString("Username");
 
-            _dbContext.Articles.Add(article);
+            if (string.IsNullOrEmpty(userRole) || userRole != "Contributor" || string.IsNullOrEmpty(username))
+            {
+                // Log the session state for debugging
+                _logger.LogWarning("Unauthorized access attempt. Role: {Role}, Username: {Username}", userRole, username);
+                return Unauthorized(); // Return 401 if session data is missing or incorrect
+            }
+
+            if (ModelState.IsValid)
+            {
+                article.ContributorUsername = username;
+                var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                article.CreateDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneInfo);
+
+                _dbContext.Articles.Add(article);
+                _dbContext.SaveChanges();
+
+                return RedirectToAction("ContributorDashboard");
+            }
+
+            return View(article);
+        }
+
+        [HttpGet]
+        public IActionResult EditArticle(int id)
+        {
+            var article = _dbContext.Articles.FirstOrDefault(a => a.ArticleId == id);
+            if (article == null || article.ContributorUsername != User.Identity.Name)
+            {
+                return Unauthorized();
+            }
+
+            return View(article);
+        }
+
+        [HttpPost]
+        public IActionResult EditArticle(Article updatedArticle)
+        {
+            var article = _dbContext.Articles.FirstOrDefault(a => a.ArticleId == updatedArticle.ArticleId);
+            if (article == null || article.ContributorUsername != User.Identity.Name)
+            {
+                return Unauthorized();
+            }
+
+            if (ModelState.IsValid)
+            {
+                article.Title = updatedArticle.Title;
+                article.Body = updatedArticle.Body;
+                article.StartDate = updatedArticle.StartDate;
+                article.EndDate = updatedArticle.EndDate;
+
+                _dbContext.SaveChanges();
+                return RedirectToAction("ContributorDashboard");
+            }
+
+            return View(updatedArticle);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteArticle(int id)
+        {
+            var article = _dbContext.Articles.FirstOrDefault(a => a.ArticleId == id);
+            if (article == null || article.ContributorUsername != User.Identity.Name)
+            {
+                return Unauthorized();
+            }
+
+            _dbContext.Articles.Remove(article);
             _dbContext.SaveChanges();
 
             return RedirectToAction("ContributorDashboard");
         }
-
-        return View(article);
-    }
-
-    [HttpGet]
-    public IActionResult EditArticle(int id)
-    {
-        if (HttpContext.Session.GetString("Role") != "Contributor")
-        {
-            return Unauthorized();
-        }
-
-        var article = _dbContext.Articles.FirstOrDefault(a => a.ArticleId == id);
-        if (article == null || article.ContributorUsername != HttpContext.Session.GetString("Username"))
-        {
-            return Unauthorized();
-        }
-
-        return View(article);
-    }
-
-    [HttpPost]
-    public IActionResult EditArticle(Article updatedArticle)
-    {
-        if (HttpContext.Session.GetString("Role") != "Contributor")
-        {
-            return Unauthorized();
-        }
-
-        var article = _dbContext.Articles.FirstOrDefault(a => a.ArticleId == updatedArticle.ArticleId);
-        if (article == null || article.ContributorUsername != HttpContext.Session.GetString("Username"))
-        {
-            return Unauthorized();
-        }
-
-        if (ModelState.IsValid)
-        {
-            article.Title = updatedArticle.Title;
-            article.Body = updatedArticle.Body;
-            article.StartDate = updatedArticle.StartDate;
-            article.EndDate = updatedArticle.EndDate;
-
-            _dbContext.SaveChanges();
-
-            return RedirectToAction("ContributorDashboard");
-        }
-
-        return View(updatedArticle);
-    }
-
-    [HttpPost]
-    public IActionResult DeleteArticle(int id)
-    {
-        if (HttpContext.Session.GetString("Role") != "Contributor")
-        {
-            return Unauthorized();
-        }
-
-        var article = _dbContext.Articles.FirstOrDefault(a => a.ArticleId == id);
-        if (article == null || article.ContributorUsername != HttpContext.Session.GetString("Username"))
-        {
-            return Unauthorized();
-        }
-
-        _dbContext.Articles.Remove(article);
-        _dbContext.SaveChanges();
-
-        return RedirectToAction("ContributorDashboard");
     }
 }

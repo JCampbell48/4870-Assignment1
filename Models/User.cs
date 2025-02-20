@@ -1,22 +1,17 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace BlogApp.Models;
-    public class User
 
-    {   [Key]  
-        public string Username { get; set; }
-        [Required]
-        public string Password { get; set; }
-        [Required]  
-        public string FirstName { get; set; }
-        [Required]
-        public string LastName { get; set; }
-        [Required]
-        public string Role { get; set; }
-        
-        public bool IsApproved { get; set; } = false;
-    }
+public class User : IdentityUser
+{
+    [Required]
+    public string FirstName { get; set; } = string.Empty;
+
+    [Required]
+    public string LastName { get; set; } = string.Empty;
+
+    public bool IsApproved { get; set; } = false;
+
+    // Remove custom Role property - ASP.NET Identity handles roles internally
+}

@@ -1,0 +1,30 @@
+@model BlogApp.Models.Article
+
+<div id="articleView">
+    <article class="article-container">
+        <h1 id="articleTitle">@Model.Title</h1>
+        
+        <div class="article-metadata">
+            <div class="metadata-item">
+                <span class="metadata-label">By:</span>
+                <span class="metadata-value">@Model.ContributorUsername</span>
+            </div>
+            <div class="metadata-item">
+                <span class="metadata-label">Start Date:</span>
+                <span class="metadata-value">@Model.StartDate.ToShortDateString()</span>
+            </div>
+            <div class="metadata-item">
+                <span class="metadata-label">End Date:</span>
+                <span class="metadata-value">@Model.EndDate.ToShortDateString()</span>
+            </div>
+        </div>
+
+        <div id="articleContent">
+            @Html.Raw(Model.Body)
+        </div>
+
+        <div class="article-actions">
+            <a href="@Url.Action("Index", "Home")" class="back-button">Back to Articles</a>
+        </div>
+    </article>
+</div>

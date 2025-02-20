@@ -1,8 +1,12 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    var role = Context.Session.GetString("Role");
 }
 
-<div class="text-center">
-    <h5 class="display-4">Welcome To Our Blog!</h5>
-    
-</div>
+@if (!string.IsNullOrEmpty(role))
+{
+    <p>Logged in as: @role</p>
+}
+else
+{
+    <p>User not logged in.</p>
+}

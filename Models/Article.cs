@@ -1,29 +1,28 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace BlogApp.Models;
-
+namespace BlogApp.Models
+{
     public class Article
-
-    {   [Required]
+    {
         public int ArticleId { get; set; }
+
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
+
         [Required]
-        public string? Body { get; set; }
+        public string Body { get; set; } = string.Empty;
+
         [Required]
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
+
         [Required]
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
-        [Required]
-        public string ContributorUsername { get; set; }
 
-        // Automatically sets the creation date when an article is created
-        [Required]
-        public DateTime CreateDate { get; set; } = DateTime.UtcNow;
+        public DateTime CreateDate { get; set; }
 
-
+        public string ContributorUsername { get; set; } = string.Empty;
     }
+}
