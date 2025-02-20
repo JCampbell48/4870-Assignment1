@@ -1,32 +1,39 @@
 @model BlogApp.Models.RegisterViewModel
 
-<h2>Register</h2>
+<div class="register-container">
+    <h2>Register</h2>
 
-<form asp-action="Register" method="post">
-    <div>
-        <label for="Email">Email</label>
-        <input type="email" id="Email" name="Email" asp-for="Email" required />
-    </div>
-    
-    <div>
-        <label for="Password">Password</label>
-        <input type="password" id="Password" name="Password" asp-for="Password" required />
-    </div>
+    <form asp-action="Register" method="post" class="register-form">
+        <div>
+            <label for="Email">Email</label>
+            <input type="email" id="Email" name="Email" asp-for="Email" required />
+            <span asp-validation-for="Email" class="field-validation-error"></span>
+        </div>
+        
+        <div>
+            <label for="Password">Password</label>
+            <input type="password" id="Password" name="Password" asp-for="Password" required />
+            <span asp-validation-for="Password" class="field-validation-error"></span>
+        </div>
 
-    <div>
-        <label for="ConfirmPassword">Confirm Password</label>
-        <input type="password" id="ConfirmPassword" name="ConfirmPassword" asp-for="ConfirmPassword" required />
-    </div>
+        <div>
+            <label for="ConfirmPassword">Confirm Password</label>
+            <input type="password" id="ConfirmPassword" name="ConfirmPassword" asp-for="ConfirmPassword" required />
+            <span asp-validation-for="ConfirmPassword" class="field-validation-error"></span>
+        </div>
 
-    <div>
-        <label for="FirstName">First Name</label>
-        <input type="text" id="FirstName" name="FirstName" asp-for="FirstName" required />
-    </div>
+        <div>
+            <label for="FirstName">First Name</label>
+            <input type="text" id="FirstName" name="FirstName" asp-for="FirstName" required />
+            <span asp-validation-for="FirstName" class="field-validation-error"></span>
+        </div>
 
-    <div>
-        <label for="LastName">Last Name</label>
-        <input type="text" id="LastName" name="LastName" asp-for="LastName" required />
-    </div>
+        <div>
+            <label for="LastName">Last Name</label>
+            <input type="text" id="LastName" name="LastName" asp-for="LastName" required />
+            <span asp-validation-for="LastName" class="field-validation-error"></span>
+        </div>
 
-    <button type="submit">Register</button>
-</form>
+        <button type="submit">Register</button>
+    </form>
+</div>

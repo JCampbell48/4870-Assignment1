@@ -42,13 +42,10 @@ namespace BlogApp.Controllers
                 var result = await _signInManager.PasswordSignInAsync(user, password, false, false);
                 if (result.Succeeded)
                 {
-                    // Fetch roles for the user
                     var roles = await _userManager.GetRolesAsync(user);
 
-                    // Log the roles for debugging purposes
                     _logger.LogInformation("User {Username} logged in with roles: {Roles}", user.UserName, string.Join(", ", roles));
 
-                    // Store username and roles in session
                     HttpContext.Session.SetString("Username", user.UserName);
                     HttpContext.Session.SetString("Role", roles.FirstOrDefault()); // You can store the first role or all of them
 

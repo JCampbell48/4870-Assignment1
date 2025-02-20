@@ -1,34 +1,36 @@
 @model List<BlogApp.Models.User>
 
-<h2>Pending Users</h2>
+<div class="pending-users-container">
+    <h2>Pending Users</h2>
 
-@if (Model.Any())
-{
-    <table>
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Approve</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var user in Model)
-        {
-            <tr>
-                <td>@user.UserName</td>
-                <td>@user.Email</td>
-                <td>
-                    <form method="post" asp-action="ApproveUser" asp-route-id="@user.Id">
-                        <button type="submit">Approve</button>
-                    </form>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No pending users.</p>
-}
+    @if (Model.Any())
+    {
+        <table class="pending-users-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Approve</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>
+                        <form method="post" asp-action="ApproveUser" asp-route-id="@user.Id">
+                            <button type="submit" class="approve-button">Approve</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="no-pending-users">No pending users.</p>
+    }
+</div>

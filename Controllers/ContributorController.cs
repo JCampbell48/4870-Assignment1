@@ -14,7 +14,6 @@ namespace BlogApp.Controllers
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger<ContributorController> _logger;
 
-        // Ensure logger is injected
         public ContributorController(ApplicationDbContext dbContext, ILogger<ContributorController> logger)
         {
             _dbContext = dbContext;
@@ -38,13 +37,11 @@ namespace BlogApp.Controllers
         [HttpPost]
         public IActionResult CreateArticle(Article article)
         {
-            // Debug: Check session values
             var userRole = HttpContext.Session.GetString("Role");
             var username = HttpContext.Session.GetString("Username");
 
             if (string.IsNullOrEmpty(userRole) || userRole != "Contributor" || string.IsNullOrEmpty(username))
             {
-                // Log the session state for debugging
                 _logger.LogWarning("Unauthorized access attempt. Role: {Role}, Username: {Username}", userRole, username);
                 return Unauthorized(); // Return 401 if session data is missing or incorrect
             }

@@ -4,41 +4,43 @@
     ViewData["Title"] = "User List";
 }
 
-<h2>Manage Users</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Email</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Role</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var (user, roles) in Model)
-        {
+<div class="manage-users-container">
+    <h2>Manage Users</h2>
+    <table class="manage-users-table">
+        <thead>
             <tr>
-                <td>@user.Email</td>
-                <td>@user.FirstName</td>
-                <td>@user.LastName</td>
-                <td>
-                    @foreach (var role in roles)
-                    {
-                        <span>@role</span><br />
-                    }
-                </td>
-                <td>
-                    <form asp-action="ChangeRole" method="post">
-                        <input type="hidden" name="id" value="@user.Id" />
-                        <select name="role" class="form-select">
-                            <option value="admin">Admin</option>
-                            <option value="contributor">Contributor</option>
-                        </select>
-                        <button type="submit" class="btn btn-primary">Change Role</button>
-                    </form>
-                </td>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Role</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var (user, roles) in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                    <td>
+                        @foreach (var role in roles)
+                        {
+                            <span class="user-role">@role</span>
+                        }
+                    </td>
+                    <td>
+                        <form asp-action="ChangeRole" method="post" class="change-role-form">
+                            <input type="hidden" name="id" value="@user.Id" />
+                            <select name="role" class="role-select">
+                                <option value="admin">Admin</option>
+                                <option value="contributor">Contributor</option>
+                            </select>
+                            <button type="submit" class="change-role-button">Change Role</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
