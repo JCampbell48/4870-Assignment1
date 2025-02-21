@@ -28,7 +28,7 @@ namespace BlogApp.Controllers
         [HttpGet]
         public IActionResult CreateArticle()
         {
-            return View();
+            return View(new Article());
         }
 
 [HttpPost]
@@ -45,7 +45,7 @@ public IActionResult CreateArticle(Article article)
     if (ModelState.IsValid)
     {
         article.ContributorUsername = username;
-        var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+        var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
         article.CreateDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneInfo);
 
         _dbContext.Articles.Add(article);
